@@ -1,0 +1,7 @@
+serial_out.txt
+bin/ecos*
+build
+.drivers
+.include
+.kernel
+*.o

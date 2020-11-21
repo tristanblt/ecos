@@ -1,0 +1,5 @@
+timeout	0
+title	ecos (x86)
+root	(cd)
+kernel	/ecos_x86
+boot

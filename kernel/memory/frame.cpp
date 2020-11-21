@@ -1,5 +1,5 @@
 #include <kernel/arch.hpp>
-#include <kernel/mm.hpp>
+#include <kernel/memory/mm.hpp>
 
 #define BITMAP_SIZE 0x20000
 

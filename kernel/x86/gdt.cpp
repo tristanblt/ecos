@@ -1,5 +1,5 @@
 #include "arch.hpp"
-#include <kernel/mm.hpp>
+#include <kernel/memory/mm.hpp>
 
 struct gdt_entry gdt_entries[6];
 struct gdt gdtr;

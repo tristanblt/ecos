@@ -1,5 +1,5 @@
 #include "arch.hpp"
-#include <kernel/mm.hpp>
+#include <kernel/memory/mm.hpp>
 
 uint32_t frame_get();
 uint32_t frame_free(uint32_t addr);

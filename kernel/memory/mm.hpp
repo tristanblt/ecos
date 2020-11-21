@@ -1,7 +1,7 @@
 #ifndef _MM_H_
 #define _MM_H_
 
-#include "multiboot.hpp"
+#include <kernel/multiboot.hpp>
 
 #define USER_STACK_BASE 0xBF800000
 #define USER_STACK_SIZE 0x1000

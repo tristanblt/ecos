@@ -51,13 +51,13 @@ extern "C" uint32_t isr_fault(int_regs_t *regs)
 {
 }
 
-int page_fault_handler(int_regs_t *regs)
+uint32_t page_fault_handler(int_regs_t *regs)
 {
     while (1)
         __asm__ __volatile__("cli\n");
 }
 
-int irq7_handler(int_regs_t *regs)
+uint32_t irq7_handler(int_regs_t *regs)
 {
 }
 

@@ -59,10 +59,6 @@ void VbeVideoMode::init_display(uint16_t width, uint16_t height, uint16_t depth)
     vbe_write(VBE_DISPI_INDEX_VIRT_WIDTH, width);
     vbe_write(VBE_DISPI_INDEX_Y_OFFSET, 0);
     vbe_enable();
-    //_pixel_buffer = (uint32_t *)malloc(VBE_WINDOW_WIDTH * VBE_WINDOW_HEIGHT * sizeof(uint32_t));
-    //if (_pixel_buffer == nullptr)
-    //    return (false);
-    //memset8(_vbe_fb_double[1], 0, _width * _height * sizeof(uint32_t));
 }
 
 void VbeVideoMode::vbe_area_grow(vector2d_t position)

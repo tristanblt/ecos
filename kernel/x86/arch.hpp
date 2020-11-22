@@ -29,7 +29,7 @@ typedef struct
     uint32_t eip, eflags;        // CALL/IRET
 } kregs_t;
 
-typedef int (*isr_call_t)(int_regs_t *);
+typedef uint32_t (*isr_call_t)(int_regs_t *);
 typedef isr_call_t isr_call_vector_t[256];
 
 #pragma pack(1)

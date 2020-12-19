@@ -12,8 +12,8 @@
 #define PCI_BAR4 PCI_BAR3 + 4
 #define PCI_BAR5 PCI_BAR4 + 4
 
-uint8_t pci_find(uint32_t vendor, uint32_t device, uint8_t *bus, uint8_t *dev, uint8_t *function);
-uint32_t pci_read(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset);
-void pci_write(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset, uint32_t data);
+uint8_t pciFind(uint32_t vendor, uint32_t device, uint8_t *bus, uint8_t *dev, uint8_t *function);
+uint32_t pciRead(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset);
+void pciWrite(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset, uint32_t data);
 
 #endif

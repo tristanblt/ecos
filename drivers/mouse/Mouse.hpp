@@ -4,6 +4,7 @@
 #include <libraries/std/io/ioport.hpp>
 #include <kernel/arch.hpp>
 #include <drivers/serial/serial.hpp>
+
 class Mouse {
     public:
         Mouse();

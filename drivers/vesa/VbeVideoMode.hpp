@@ -45,44 +45,44 @@ public:
     bool init();
 
     // draw
-    void draw_pixel(vector2d_t position, color_t color);
-    void draw_rect(rect_t rect, color_t color);
-    void draw_circle(vector2d_t position, uint32_t radius, color_t color);
-    void draw_horizontal_line(vector2d_t position, uint32_t size, color_t color);
+    void drawPixel(vector2d_t position, color_t color);
+    void drawRect(rect_t rect, color_t color);
+    void drawCircle(vector2d_t position, uint32_t radius, color_t color);
+    void drawHorizontalLine(vector2d_t position, uint32_t size, color_t color);
 
     // display
     void display();
 
 private:
     // init
-    void init_display(uint16_t width, uint16_t height, uint16_t depth);
+    void initDisplay(uint16_t width, uint16_t height, uint16_t depth);
 
     // utils
-    void vbe_write(uint16_t index, uint16_t value);
-    void vbe_disable();
-    void vbe_enable();
-    void vbe_area_grow(vector2d_t position);
+    void vbeWrite(uint16_t index, uint16_t value);
+    void vbeDisable();
+    void vbeEnable();
+    void vbeAreaGrow(vector2d_t position);
 
-    uint8_t _vbe_bus;
-    uint8_t _vbe_dev;
-    uint8_t _vbe_function;
-    uint8_t *_vbe_fb;
-    uint32_t *_vbe_fb_double[2];
-    uint8_t _vbe_fb_current;
-    uint8_t _vbe_fb_pages;
+    uint8_t _vbeBus;
+    uint8_t _vbeDev;
+    uint8_t _vbeFunction;
+    uint8_t *_vbeFb;
+    uint32_t *_vbeFbDouble[2];
+    uint8_t _vbeFbCurrent;
+    uint8_t _vbeFbPages;
     uint16_t _width;
     uint16_t _height;
     uint16_t _depth;
     uint32_t _scanline;
-    uint32_t _pixel_size;
-    uint8_t _font_xsize;
-    uint8_t _font_ysize;
-    uint32_t _update_x1;
-    uint32_t _update_x0;
-    uint32_t _update_y1;
-    uint32_t _update_y0;
+    uint32_t _pixelSize;
+    uint8_t _fontSizeX;
+    uint8_t _fontSizeY;
+    uint32_t _updateX1;
+    uint32_t _updateX0;
+    uint32_t _updateY1;
+    uint32_t _updateY0;
 
-    uint32_t *_pixel_buffer;
+    uint32_t *_pixelBuffer;
 };
 
 #endif /* !VESAVIDEOMODE_HPP_ */

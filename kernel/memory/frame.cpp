@@ -3,114 +3,114 @@
 
 #define BITMAP_SIZE 0x20000
 
-uint32_t frames_count, frame_idx;
-uint32_t frames_free;
-uint8_t physical_bitmap[BITMAP_SIZE];
+uint32_t framesCount, frameIdx;
+uint32_t framesFree;
+uint8_t physicalBitmap[BITMAP_SIZE];
 
-void frame_set(uint32_t i)
+void frameSet(uint32_t i)
 {
-    physical_bitmap[i / 8] = 1 << (i % 8);
-    frames_free--;
+    physicalBitmap[i / 8] = 1 << (i % 8);
+    framesFree--;
 }
 
-void frame_set_address(uint32_t addr)
+void frameSetAddress(uint32_t addr)
 {
     uint32_t i;
 
     i = addr / FRAME_SIZE;
-    physical_bitmap[i / 8] = 1 << (i % 8);
-    frames_free--;
+    physicalBitmap[i / 8] = 1 << (i % 8);
+    framesFree--;
 }
 
-void frame_unset(uint32_t i)
+void frameUnset(uint32_t i)
 {
-    if (i > frames_count)
+    if (i > framesCount)
         return;
-    physical_bitmap[i / 8] &= ~(1 << (i % 8));
-    frames_free++;
+    physicalBitmap[i / 8] &= ~(1 << (i % 8));
+    framesFree++;
 }
 
-void frame_unset_address(uint32_t addr)
+void frameUnsetAddress(uint32_t addr)
 {
     uint32_t i;
 
     i = addr / FRAME_SIZE;
-    if (i > frames_count)
+    if (i > framesCount)
         return;
-    physical_bitmap[i / 8] &= ~(1 << (i % 8));
-    frames_free++;
+    physicalBitmap[i / 8] &= ~(1 << (i % 8));
+    framesFree++;
 }
 
-void frame_setup(uint32_t mem_size, uint32_t reserved_start, uint32_t reserved_end)
+void frameSetup(uint32_t memSize, uint32_t reservedStart, uint32_t reservedEnd)
 {
     uint32_t i;
 
-    frames_count = mem_size / FRAME_SIZE;
-    frames_free = frames_count;
-    frame_idx = 0;
-    for (i = reserved_start; i < reserved_end; i += FRAME_SIZE) {
-        frame_set_address(i);
-        frame_idx++;
+    framesCount = memSize / FRAME_SIZE;
+    framesFree = framesCount;
+    frameIdx = 0;
+    for (i = reservedStart; i < reservedEnd; i += FRAME_SIZE) {
+        frameSetAddress(i);
+        frameIdx++;
     }
 }
 
-uint32_t frame_get_blk(uint32_t blk_sz)
+uint32_t frameGetBlk(uint32_t blkSz)
 {
-    uint32_t blk_left, blk_start, i, i_byte, i_bit;
+    uint32_t blkLeft, blkStart, i, iByte, iBit;
 
-    blk_left = blk_sz;
-    for (i = 0; i < frames_count; i++) {
-        i_byte = i / 8;
-        i_bit = i % 8;
+    blkLeft = blkSz;
+    for (i = 0; i < framesCount; i++) {
+        iByte = i / 8;
+        iBit = i % 8;
 
-        if (physical_bitmap[i_byte] && (1 << i_bit)) {
-            if (blk_left < blk_sz)
-                blk_left = blk_sz;
+        if (physicalBitmap[iByte] && (1 << iBit)) {
+            if (blkLeft < blkSz)
+                blkLeft = blkSz;
             continue;
         }
-        if (blk_left == blk_sz)
-            blk_start = i;
-        blk_left--;
-        if (blk_left == 0)
+        if (blkLeft == blkSz)
+            blkStart = i;
+        blkLeft--;
+        if (blkLeft == 0)
             break;
     }
-    for (i = blk_start; i < (blk_start + blk_sz); i++)
-        frame_set(i);
-    frame_idx += blk_sz;
-    return ((uint32_t)(blk_start * FRAME_SIZE));
+    for (i = blkStart; i < (blkStart + blkSz); i++)
+        frameSet(i);
+    frameIdx += blkSz;
+    return ((uint32_t)(blkStart * FRAME_SIZE));
 }
 
-uint32_t frame_get()
+uint32_t frameGet()
 {
-    uint32_t i_byte, i_bit, i;
+    uint32_t iByte, iBit, i;
 
-    if (frames_free == 0)
+    if (framesFree == 0)
         return 0;
-    for (i = frame_idx; i < frames_count; i++) {
-        i_byte = i / 8;
-        i_bit = i % 8;
+    for (i = frameIdx; i < framesCount; i++) {
+        iByte = i / 8;
+        iBit = i % 8;
 
-        if (physical_bitmap[i_byte] && (1 << i_bit))
+        if (physicalBitmap[iByte] && (1 << iBit))
             continue;
-        frame_set(i);
-        frame_idx++;
-        return ((uint32_t)((i_byte * 8 + i_bit) * FRAME_SIZE));
+        frameSet(i);
+        frameIdx++;
+        return ((uint32_t)((iByte * 8 + iBit) * FRAME_SIZE));
     }
-    frame_idx = 0;
-    return (frame_get());
+    frameIdx = 0;
+    return (frameGet());
 }
 
-void frame_free(uint32_t addr)
+void frameFree(uint32_t addr)
 {
-    frame_unset_address(addr);
+    frameUnsetAddress(addr);
 }
 
-uint32_t frame_count()
+uint32_t frameCount()
 {
-    return (frames_count);
+    return (framesCount);
 }
 
-uint32_t frame_free_count()
+uint32_t frameFreeCount()
 {
-    return (frames_free);
+    return (framesFree);
 }

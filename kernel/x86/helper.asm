@@ -1,8 +1,8 @@
-global load_gdt
-global load_idt
-global load_tss
+global loadGdt
+global loadIdt
+global loadTss
 
-load_gdt:
+loadGdt:
     mov   eax, [esp + 4]
     lgdt  [eax]
 
@@ -16,7 +16,7 @@ load_gdt:
     mov  ss, ax
     ret
 
-load_tss:
+loadTss:
     mov   ax, 0x2B
     ltr   ax
     ret

@@ -5,29 +5,37 @@
 #include <drivers/vesa/VbeVideoMode.hpp>
 #include <drivers/serial/serial.hpp>
 #include <drivers/mouse/Mouse.hpp>
+#include <libraries/ecs/Ecos.hpp>
 
-// uint32_t kernel_stack_addr;
+void initEcos(ecs::Ecos *ecos)
+{
+
+}
 
 extern "C" int kmain(uint32_t multiboot_info)
 {
     disable();
     arch();
     mm((multiboot_info_t *)multiboot_info);
-
     serial();
 
-    serial_putstr((uint8_t *)"Welcome to ECOS\n");
+    serialPutstr((uint8_t *)"\n\n");
+    serialPutstr((uint8_t *)"#####  #####  #######  #####\n");
+    serialPutstr((uint8_t *)"##     ##     ##   ##  ##   \n");
+    serialPutstr((uint8_t *)"#####  ##     ##   ##  #####\n");
+    serialPutstr((uint8_t *)"##     ##     ##   ##     ##\n");
+    serialPutstr((uint8_t *)"#####  #####  #######  #####\n");
+    serialPutstr((uint8_t *)"\n\nInit OS...\n");
 
-    Mouse m;
-
+    serialPutstr((uint8_t *)"-> Init VESA mode\n");
     VbeVideoMode vesa;
     vesa.init();
 
-    uint32_t i = 0;
-    while (true) {
-        vesa.draw_rect({0, 0, 1600, 900}, (color_t){0xA0A0A0});
-        vesa.draw_rect({100 + i, 100, 500, 500}, (color_t){0xFFFFFF});
-        i+=10;
-        vesa.display();
-    }
+    serialPutstr((uint8_t *)"-> Init ECS environnement\n");
+    ecs::Ecos ecos;
+
+    initEcos(&ecos);
+
+    serialPutstr((uint8_t *)"-> Run ECOS\n");
+    ecos.run();
 }

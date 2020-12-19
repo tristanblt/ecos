@@ -2,7 +2,7 @@ bits 32
 
 global start
 extern kernel_stack_addr
-global page_directory
+global pageDirectory
 extern kmain
 
 %define kernel_virt2phys -0xBFF00000
@@ -69,7 +69,7 @@ start:
     add     eax, kernel_virt2phys
     and     eax, 0xFFFFF000
     or      eax, 3
-    mov     ebx, page_directory
+    mov     ebx, pageDirectory
     add     ebx, kernel_virt2phys
     mov     [ebx], eax
 
@@ -77,11 +77,11 @@ start:
     add     eax, kernel_virt2phys
     and     eax, 0xFFFFF000
     or      eax, 3
-    mov     ebx, page_directory
+    mov     ebx, pageDirectory
     add     ebx, kernel_virt2phys
     mov     [ebx+768*4], eax
 
-    mov     eax, page_directory
+    mov     eax, pageDirectory
     and     eax, 0xFFFFF000
     add     eax, kernel_virt2phys
 
@@ -106,7 +106,7 @@ section .data
 section .bss
 align 0x1000
 
-page_directory:
+pageDirectory:
     resb  0x1000
 page_table0:
     resb  0x1000

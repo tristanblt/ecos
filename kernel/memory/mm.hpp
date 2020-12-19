@@ -23,12 +23,12 @@ typedef struct mblock
 } mblock_t __attribute__((packed));
 
 // from Linker script
-extern uint8_t kernel_paddr_start;
-extern uint8_t kernel_paddr_end;
-extern uint8_t kernel_vaddr_start;
-extern uint8_t kernel_vaddr_end;
+extern uint8_t kernelPaddrStart;
+extern uint8_t kernelPaddrEnd;
+extern uint8_t kernelVaddrStart;
+extern uint8_t kernelVaddrEnd;
 
-#define VIRTUAL_TO_PHYSICAL(addr) ((uint32_t)addr - (uint32_t)&kernel_vaddr_start + (uint32_t)&kernel_paddr_start)
+#define VIRTUAL_TO_PHYSICAL(addr) ((uint32_t)addr - (uint32_t)&kernelVaddrStart + (uint32_t)&kernelPaddrStart)
 
 void mm(multiboot_info_t *mb);
 

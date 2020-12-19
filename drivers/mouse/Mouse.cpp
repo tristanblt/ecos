@@ -1,30 +1,23 @@
-/*
-** EPITECH PROJECT, 2020
-** ECOS
-** File description:
-** Mouse
-*/
-
 #include "Mouse.hpp"
 
-void mouse_write(uint8_t write)
+void mouseWrite(uint8_t write)
 {
-    outportb(0x64, 0xD4);
-    outportb(0x60, write);
+    outPortB(0x64, 0xD4);
+    outPortB(0x60, write);
 }
 
-uint8_t mouse_read()
+uint8_t mouseRead()
 {
-    return (inportb(0x60));
+    return (inPortB(0x60));
 }
 
-uint32_t mouse_handler(int_regs_t *regs)
+uint32_t mouseHandler(intRegs_t *regs)
 {
-    serial_putstr((uint8_t *)"mouse packet\n");
+    serialPutstr((uint8_t *)"mouse packet\n");
     // static uint8_t status, cicle = 0;
     // static struct mouse_packet pkt;
 
-    // status = inportb(0x64);
+    // status = inPortB(0x64);
 
     // if ((status & 0x01) && (status & 0x20))
     // {
@@ -77,20 +70,20 @@ Mouse::Mouse()
 {
     uint8_t status;
 
-    outportb(0x64, 0xA8);
-    outportb(0x64, 0x20);
+    outPortB(0x64, 0xA8);
+    outPortB(0x64, 0x20);
 
-    status = (inportb(0x60) | 2);
+    status = (inPortB(0x60) | 2);
 
-    outportb(0x64, 0x60);
-    outportb(0x60, status);
+    outPortB(0x64, 0x60);
+    outPortB(0x60, status);
 
-    mouse_write(0xF6);
-    mouse_read();
+    mouseWrite(0xF6);
+    mouseRead();
 
-    mouse_write(0xF4);
-    mouse_read();
+    mouseWrite(0xF4);
+    mouseRead();
 
-    IRQ_SET_HANDLER(12, mouse_handler);
-    irq_enable(12);
+    IRQ_SET_HANDLER(12, mouseHandler);
+    irqEnable(12);
 }

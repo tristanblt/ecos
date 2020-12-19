@@ -7,9 +7,9 @@ VADDR_BASE = 0xC0000000;
 SECTIONS
 {
    . = VADDR_BASE;
-   kernel_vaddr_start = .;
-   _kernel_vaddr_start = .;
-   kernel_paddr_start = PADDR_BASE; _kernel_paddr_start = PADDR_BASE;
+   kernelVaddrStart = .;
+   _kernelVaddrStart = .;
+   kernelPaddrStart = PADDR_BASE; _kernelPaddrStart = PADDR_BASE;
 
    .multiboot ALIGN (0x1000) : AT(PADDR_BASE)
    {
@@ -35,8 +35,8 @@ SECTIONS
    {
        *(.bss)
        *(COMMON)
-       kernel_paddr_end = .; _kernel_paddr_end = .;
+       kernelPaddrEnd = .; _kernelPaddrEnd = .;
    }
-   kernel_vaddr_end = .;
-   _kernel_vaddr_end = .;
+   kernelVaddrEnd = .;
+   _kernelVaddrEnd = .;
  }

@@ -12,16 +12,16 @@
 #define USER_CODE 0x18
 #define USER_DATA 0x20
 
-extern uint32_t kernel_stack_addr;
+extern uint32_t kernelStackAddr;
 
 #pragma pack(1)
 typedef struct
 {
     uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
     uint32_t gs, fs, es, ds;
-    uint32_t intn, err_code;
+    uint32_t intn, errCode;
     uint32_t eip, cs, eflags, useresp, ss;
-} int_regs_t;
+} intRegs_t;
 
 typedef struct
 {
@@ -29,15 +29,15 @@ typedef struct
     uint32_t eip, eflags;        // CALL/IRET
 } kregs_t;
 
-typedef uint32_t (*isr_call_t)(int_regs_t *);
-typedef isr_call_t isr_call_vector_t[256];
+typedef uint32_t (*isrCall_t)(intRegs_t *);
+typedef isrCall_t isrCallVector_t[256];
 
 #pragma pack(1)
 typedef struct
 {
     unsigned gate;
-    isr_call_t isr_call;
-} isr_vector_t;
+    isrCall_t isr_call;
+} isrVector_t;
 
 struct gdt
 {
@@ -51,24 +51,24 @@ struct idt
     uint32_t offset;
 } __attribute__((__packed__));
 
-struct gdt_entry
+struct gdtEntry
 {
     uint32_t low;
     uint32_t high;
 } __attribute__((aligned(8)));
 
-typedef struct idt_entry
+typedef struct idtEntry
 {
-    uint16_t offset_1; // offset bits 0..15
+    uint16_t offset1; // offset bits 0..15
     uint16_t selector; // a code segment selector in GDT or LDT
     uint8_t ist;       // bits 0..2 holds Interrupt Stack Table offset, rest of bits zero.
-    uint8_t type_attr; // type and attributes
-    uint16_t offset_2; // offset bits 16..31
-} __attribute__((aligned(8), __packed__)) idt_entry_t;
+    uint8_t typeAttr; // type and attributes
+    uint16_t offset2; // offset bits 16..31
+} __attribute__((aligned(8), __packed__)) idtEntry_t;
 
-struct tss_entry_struct
+struct tssEntryStruct
 {
-    uint32_t prev_tss;
+    uint32_t prevTss;
     uint32_t esp0;
     uint32_t ss0;
     uint32_t esp1;
@@ -94,39 +94,39 @@ struct tss_entry_struct
     uint32_t gs;
     uint32_t ldt;
     uint16_t trap;
-    uint16_t iomap_base;
+    uint16_t iomapBase;
 } __attribute__((__packed__));
 
-typedef struct tss_entry_struct tss_t;
-typedef struct tss_entry_struct tss_entry_t;
+typedef struct tssEntryStruct tss_t;
+typedef struct tssEntryStruct tssEntry_t;
 
-extern tss_entry_t kernel_tss;
+extern tssEntry_t kernelTss;
 
-void syscall_setup();
+void syscallSetup();
 
-void isr_install(void);
-void isr_init(void);
+void isrInstall(void);
+void isrInit(void);
 
-extern "C" void isr_set_handler(int num, isr_vector_t *isr_vector);
-extern "C" void isr_get_handler(int num, isr_vector_t *isr_vector);
+extern "C" void isrSetHandler(int num, isrVector_t *isrVector);
+extern "C" void isrGetHandler(int num, isrVector_t *isrVector);
 
 #define IRQ_SET_HANDLER(irq, handler)     \
     {                                     \
         ASSERT_PANIC(irq <= 0xF);         \
-        isr_vector_t v = {0x8E, handler}; \
-        isr_set_handler(0x20 + irq, &v);  \
+        isrVector_t v = {0x8E, handler}; \
+        isrSetHandler(0x20 + irq, &v);  \
     }
 #define ISR_SET_HANDLER(n, handler)       \
     {                                     \
-        isr_vector_t v = {0x8E, handler}; \
-        isr_set_handler(n, &v);           \
+        isrVector_t v = {0x8E, handler}; \
+        isrSetHandler(n, &v);           \
     }
 
 #define arch()         \
     {                  \
         gdt();         \
         idt();         \
-        isr_install(); \
+        isrInstall(); \
     }
 
 #endif

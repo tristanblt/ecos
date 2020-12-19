@@ -1,9 +1,9 @@
-global isr_set_handler
-global isr_get_handler
-global load_idt
+global isrSetHandler
+global isrGetHandler
+global loadIdt
 
-extern isr_call_ptr_vector
-extern isr_fault
+extern isrCallPtrVector
+extern isrFault
 
 isr_handler:
     xchg    bx, bx
@@ -23,7 +23,7 @@ isr_handler:
     push    esp
     mov     ebp, esp
     mov     ebx, [ebp + 52]
-    mov     eax, [isr_call_ptr_vector]
+    mov     eax, [isrCallPtrVector]
 
     mov     eax, [eax + ebx * 4]
     cmp     eax, dword 0
@@ -34,7 +34,7 @@ isr_handler:
     jmp     isr_common
 
 __isr_ptr_null:
-    call    isr_fault
+    call    isrFault
 
 
 isr_common:
@@ -49,7 +49,7 @@ isr_common:
     add     esp, 8
     iret
 
-isr_get_handler:
+isrGetHandler:
     push    ebp
     mov     ebp, esp
     push    eax
@@ -64,7 +64,7 @@ isr_get_handler:
     mov     al, [_idt + ebx + 5]
     mov     [esi], eax
 
-    mov     eax, [isr_call_ptr_vector]
+    mov     eax, [isrCallPtrVector]
     mov     ebx, [ebp + 8]
     mov     esi, [eax + ebx * 4]
     mov     [esi + 4], esi
@@ -74,7 +74,7 @@ isr_get_handler:
     pop     ebp
     ret
 
-isr_set_handler:
+isrSetHandler:
     push    ebp
     mov     ebp, esp
     push    eax
@@ -88,7 +88,7 @@ isr_set_handler:
     shl     ebx,3
     mov     [_idt + ebx + 5], al
 
-    mov     eax, [isr_call_ptr_vector]
+    mov     eax, [isrCallPtrVector]
     mov     ebx, [ebp + 8]
     mov     esi, [esi + 4]
     mov     [eax + ebx * 4], esi
@@ -199,7 +199,7 @@ idt_ptr:
   	dd     _idt
 
 
-    load_idt:
+    loadIdt:
         mov ecx, ((_idt_end - _idt) / 8)
         mov ebx, _idt
         mov edx, isr0

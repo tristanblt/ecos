@@ -2,18 +2,18 @@
 #include "arch.hpp"
 #include "pic.hpp"
 
-extern "C" void load_idt();
+extern "C" void loadIdt();
 
-isr_call_vector_t isr_call_vector;
-isr_call_vector_t *isr_call_ptr_vector = 0;
+isrCallVector_t isrCallVector;
+isrCallVector_t *isrCallPtrVector = 0;
 
-struct fault_name
+struct faultName
 {
     char *name;
-    uint8_t has_errcode;
+    uint8_t hasErrcode;
 };
 
-struct fault_name fault_names[] = {
+struct faultName faultNames[] = {
     {"Divide-by-Zero", false},
     {"Debug", false},
     {"Non-maskable Interrupt", false},
@@ -47,30 +47,30 @@ struct fault_name fault_names[] = {
     {"Security Exception", true},
     {nullptr, false}};
 
-extern "C" uint32_t isr_fault(int_regs_t *regs)
+extern "C" uint32_t isrFault(intRegs_t *regs)
 {
 }
 
-uint32_t page_fault_handler(int_regs_t *regs)
+uint32_t pageFaultHandler(intRegs_t *regs)
 {
     while (1)
         __asm__ __volatile__("cli\n");
 }
 
-uint32_t irq7_handler(int_regs_t *regs)
+uint32_t irq7Handler(intRegs_t *regs)
 {
 }
 
-void isr_install()
+void isrInstall()
 {
-    ISR_SET_HANDLER(14, page_fault_handler);
-    IRQ_SET_HANDLER(7, irq7_handler);
+    ISR_SET_HANDLER(14, pageFaultHandler);
+    IRQ_SET_HANDLER(7, irq7Handler);
 }
 
 void idt()
 {
     pic();
-    load_idt();
-    isr_call_ptr_vector = &isr_call_vector;
-    isr_install();
+    loadIdt();
+    isrCallPtrVector = &isrCallVector;
+    isrInstall();
 }

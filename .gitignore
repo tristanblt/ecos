@@ -5,3 +5,5 @@ build
 .include
 .kernel
 *.o
+old
+.DS_Store

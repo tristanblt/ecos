@@ -6,7 +6,7 @@
 #define IRQ_BASE 0x20
 
 void pic(void);
-void irq_enable(uint8_t irq);
-void pic_acknowledge(uint8_t irq);
+void irqEnable(uint8_t irq);
+void picAcknowledge(uint8_t irq);
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <libraries/std/types.hpp>
 
-uint8_t bios_read_byte(uint16_t segment, uint16_t offset);
-uint16_t bios_read_word(uint16_t segment, uint16_t offset);
+uint8_t biosReadByte(uint16_t segment, uint16_t offset);
+uint16_t biosReadWord(uint16_t segment, uint16_t offset);
 
 #endif

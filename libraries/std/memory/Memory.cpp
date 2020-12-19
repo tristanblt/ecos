@@ -1,5 +1,5 @@
 #include <libraries/std/types/CTypes.hpp>
-#include <libraries/std/Memory.hpp>
+#include <libraries/std/memory/Memory.hpp>
 
 using namespace std;
 

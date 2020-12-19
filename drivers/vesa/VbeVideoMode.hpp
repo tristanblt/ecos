@@ -4,7 +4,7 @@
 #include <drivers/interfaces/IVideoMode.hpp>
 #include <kernel/arch.hpp>
 #include <libraries/std/io/IOPort.hpp>
-#include <libraries/std/Memory.hpp>
+#include <libraries/std/memory/Memory.hpp>
 
 #define VESA_VBE_VENDOR 0x1234
 #define VESA_VBE_DEVICE 0x1111

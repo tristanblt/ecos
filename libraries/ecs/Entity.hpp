@@ -1,6 +1,8 @@
 #ifndef ENTITY_HPP_
 #define ENTITY_HPP_
 
+#include <drivers/serial/Serial.hpp>
+
 namespace ecs {
     class Entity {
         public:
@@ -8,6 +10,10 @@ namespace ecs {
             ~Entity() = default;
 
             void addComponent();
+            void removeComponent();
+            void getComponent();
+
+            void getComponentModel();
 
         protected:
         private:

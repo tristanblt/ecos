@@ -4,11 +4,7 @@
 namespace ecs {
     class IComponent {
         public:
-            IComponent();
-            ~IComponent();
-
-        protected:
-        private:
+            
     };
 }
 

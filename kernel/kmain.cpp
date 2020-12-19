@@ -12,7 +12,13 @@ using namespace drvs;
 
 void initEcos(Ecos *ecos)
 {
+    ecos->addSystem(nullptr);
 
+    Entity *e = ecos->addEntity();
+    e->addComponent();
+
+    e = ecos->addEntity();
+    e->addComponent();
 }
 
 extern "C" int kmain(uint32 multiboot_info)

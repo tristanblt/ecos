@@ -84,6 +84,11 @@ void *malloc(uint32 size)
     return ((uint32 *)b->addr);
 }
 
+void free(void *ptr)
+{
+
+}
+
 void mm(multiboot_info_t *mb)
 {
     multiboot_module_t *mod;

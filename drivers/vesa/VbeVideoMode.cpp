@@ -25,8 +25,8 @@ bool VbeVideoMode::init()
 
 void VbeVideoMode::vbeWrite(uint16 index, uint16 value)
 {
-    outPortW(VBE_DISPI_IOPORT_INDEX, index);
-    outPortW(VBE_DISPI_IOPORT_DATA, value);
+    IOPort::outPortW(VBE_DISPI_IOPORT_INDEX, index);
+    IOPort::outPortW(VBE_DISPI_IOPORT_DATA, value);
 }
 
 void VbeVideoMode::vbeDisable()

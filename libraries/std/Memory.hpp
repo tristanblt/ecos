@@ -1,10 +1,3 @@
-/*
-** EPITECH PROJECT, 2020
-** ECOS
-** File description:
-** Memory
-*/
-
 #ifndef MEMORY_HPP_
 #define MEMORY_HPP_
 

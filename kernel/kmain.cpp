@@ -1,41 +1,47 @@
 #include <kernel/arch.hpp>
 #include <kernel/multiboot.hpp>
-#include <libraries/std/io/ioport.hpp>
+#include <libraries/std/io/IOPort.hpp>
 #include <kernel/memory/mm.hpp>
 #include <drivers/vesa/VbeVideoMode.hpp>
-#include <drivers/serial/serial.hpp>
-#include <drivers/mouse/Mouse.hpp>
+#include <drivers/serial/Serial.hpp>
 #include <libraries/ecs/Ecos.hpp>
 
-void initEcos(ecs::Ecos *ecos)
+using namespace std;
+using namespace ecs;
+using namespace drvs;
+
+void initEcos(Ecos *ecos)
 {
 
 }
 
 extern "C" int kmain(uint32 multiboot_info)
 {
-    disable();
+    IOPort::disable();
     arch();
+
+
+    Serial::init();
+    Serial::putEcosLogo();
+
+
+    Serial::putTask((uint8 *)"Memory manager", false);
     mm((multiboot_info_t *)multiboot_info);
-    serial();
+    Serial::putTask((uint8 *)"Memory manager", true);
 
-    serialPutstr((uint8 *)"\n\n");
-    serialPutstr((uint8 *)"#####  #####  #######  #####\n");
-    serialPutstr((uint8 *)"##     ##     ##   ##  ##   \n");
-    serialPutstr((uint8 *)"#####  ##     ##   ##  #####\n");
-    serialPutstr((uint8 *)"##     ##     ##   ##     ##\n");
-    serialPutstr((uint8 *)"#####  #####  #######  #####\n");
-    serialPutstr((uint8 *)"\n\nInit OS...\n");
 
-    serialPutstr((uint8 *)"-> Init VESA mode\n");
+    Serial::putTask((uint8 *)"VESA", false);
     VbeVideoMode vesa;
     vesa.init();
+    Serial::putTask((uint8 *)"VESA", true);
 
-    serialPutstr((uint8 *)"-> Init ECS environnement\n");
-    ecs::Ecos ecos;
 
+    Serial::putTask((uint8 *)"ECS Environement", false);
+    Ecos ecos;
     initEcos(&ecos);
+    Serial::putTask((uint8 *)"ECS Environement", true);
 
-    serialPutstr((uint8 *)"-> Run ECOS\n");
+
+    Serial::putTask((uint8 *)"ECOS", false);
     ecos.run();
 }

@@ -37,7 +37,7 @@ mblock *splitHole(mblock *b, uint32 size)
     }
 }
 
-mblock *_find_hole(uint32 size)
+mblock *findHole(uint32 size)
 {
     mblock *b;
 
@@ -63,7 +63,7 @@ void *malloc(uint32 size)
 
     if (size == 0)
         return (nullptr);
-    b = _find_hole(size);
+    b = findHole(size);
     if (b)
         return (void *)b->addr;
     if ((mallocTop + size + sizeof(mblock)) > heap) {

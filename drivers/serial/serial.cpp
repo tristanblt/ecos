@@ -1,21 +1,26 @@
-#include <libraries/std/types/CTypes.hpp>
-#include <libraries/std/io/ioport.hpp>
-#include <kernel/devices/bios.hpp>
+#include <drivers/serial/Serial.hpp>
+
+using namespace std;
+using namespace drvs;
 
 uint16 SERIAL_PORT[4];
 
-void serialPutchar(uint8 c)
+void Serial::putchar(uint8 c)
 {
-    outPortB(SERIAL_PORT[0], c);
+    #ifdef SERIAL_DEBUG
+    IOPort::outPortB(SERIAL_PORT[0], c);
+    #endif
 }
 
-void serialPutstr(uint8 *str)
+void Serial::putstr(uint8 *str)
 {
+    #ifdef SERIAL_DEBUG
     for (int i = 0; str[i]; i++)
-        outPortB(SERIAL_PORT[0], str[i]);
+        putchar(str[i]);
+    #endif
 }
 
-void serial()
+void Serial::init()
 {
     uint32 i;
 
@@ -28,11 +33,33 @@ void serial()
     if ((SERIAL_PORT[3] = biosReadWord(0x40, 0x6)) == 0)
         SERIAL_PORT[3] = 0x2E8;
     for (i = 0; i < 4; i++) {
-        outPortB(SERIAL_PORT[i] + 1, 0x00);
-        outPortB(SERIAL_PORT[i] + 3, 0x80);
-        outPortB(SERIAL_PORT[i] + 0, 0x03);
-        outPortB(SERIAL_PORT[i] + 1, 0x00);
-        outPortB(SERIAL_PORT[i] + 3, 0x03);
-        outPortB(SERIAL_PORT[i] + 2, 0x7);
+        IOPort::outPortB(SERIAL_PORT[i] + 1, 0x00);
+        IOPort::outPortB(SERIAL_PORT[i] + 3, 0x80);
+        IOPort::outPortB(SERIAL_PORT[i] + 0, 0x03);
+        IOPort::outPortB(SERIAL_PORT[i] + 1, 0x00);
+        IOPort::outPortB(SERIAL_PORT[i] + 3, 0x03);
+        IOPort::outPortB(SERIAL_PORT[i] + 2, 0x7);
     }
+}
+
+void Serial::putEcosLogo()
+{
+    putstr((uint8 *)"\n\n");
+    putstr((uint8 *)"#####  #####  #######  #####\n");
+    putstr((uint8 *)"##     ##     ##   ##  ##   \n");
+    putstr((uint8 *)"#####  ##     ##   ##  #####\n");
+    putstr((uint8 *)"##     ##     ##   ##     ##\n");
+    putstr((uint8 *)"#####  #####  #######  #####\n");
+    putstr((uint8 *)"\n\nInit ECOS kernel...\n\n");
+}
+
+void Serial::putTask(uint8 *str, bool done)
+{
+    if (done) {
+        putstr((uint8 *)"[done] ");
+    } else {
+        putstr((uint8 *)"[start] ");
+    }
+    putstr(str);
+    putstr((uint8 *)"\n");
 }

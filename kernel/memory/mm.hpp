@@ -12,7 +12,7 @@
 
 #define FRAME_SIZE 0x1000
 
-#define MBLOCK_MAGIC 0xF4283F30 // thanks https://www.browserling.com/tools/random-hex
+#define MBLOCK_MAGIC 0xF4283F30
 
 struct __attribute__((packed)) mblock
 {

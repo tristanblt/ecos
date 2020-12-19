@@ -4,6 +4,7 @@
 KERNEL := ecos
 ARCH := x86
 WARNING := no
+SERIAL_DEBUG := yes
 KERNEL_NAME := $(KERNEL)_$(ARCH)
 
 PROJDIRS := kernel drivers libraries
@@ -22,17 +23,20 @@ AR := ar
 AS := as
 
 ifeq ($(WARNING),yes)
-	WARNINGS := -Wall -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align \
-	            -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations \
-	            -Wredundant-decls -Wnested-externs -Winline -Wno-long-long \
-	            -Wconversion -Wstrict-prototypes
+	WARNINGS := -Wall -Wextra -Wshadow
 	ASMWARNINGS := -W-all
 else
 	WARNINGS := -w
 	ASMWARNINGS := -w-all
 endif
 
-CFLAGS := -g $(WARNINGS) -D$(ARCH) -I./ -mno-sse -nostdlib -nostdinc -nodefaultlibs -ffreestanding -m32
+ifeq ($(SERIAL_DEBUG),yes)
+	SERIAL_DEBUG_DEFINE := -DSERIAL_DEBUG
+else
+	SERIAL_DEBUG_DEFINE :=
+endif
+
+CFLAGS := -g $(WARNINGS) $(SERIAL_DEBUG_DEFINE) -D$(ARCH) -I./ -mno-sse -nostdlib -nostdinc -nodefaultlibs -ffreestanding -m32
 CXXFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti
 
 ifeq ($(ARCH),x86)

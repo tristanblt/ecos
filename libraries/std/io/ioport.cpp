@@ -1,31 +1,33 @@
-#include "ioport.hpp"
+#include <libraries/std/io/IOPort.hpp>
 
-void enable(void)
+using namespace std;
+
+void IOPort::enable(void)
 {
     __asm__ __volatile__("sti");
 }
 
-void disable(void)
+void IOPort::disable(void)
 {
     __asm__ __volatile__("cli");
 }
 
-void outPortB(uint32 port, uint8 value)
+void IOPort::outPortB(uint32 port, uint8 value)
 {
 	__asm__ __volatile__("outb %%al,%%dx"::"d" (port), "a" (value));
 }
 
-void outPortW(uint32 port, uint16 value)
+void IOPort::outPortW(uint32 port, uint16 value)
 {
 	__asm__ __volatile__("outw %%ax,%%dx"::"d" (port), "a" (value));
 }
 
-void outPortL(uint32 port, uint32 value)
+void IOPort::outPortL(uint32 port, uint32 value)
 {
 	__asm__ __volatile__("outl %%eax,%%dx"::"d" (port), "a" (value));
 }
 
-unsigned char inPortB(uint32 port)
+unsigned char IOPort::inPortB(uint32 port)
 {
 	uint8 ret;
 
@@ -33,7 +35,7 @@ unsigned char inPortB(uint32 port)
 	return (ret);
 }
 
-uint16 inPortW(uint32 port)
+uint16 IOPort::inPortW(uint32 port)
 {
 	uint16 ret;
 
@@ -41,7 +43,7 @@ uint16 inPortW(uint32 port)
 	return (ret);
 }
 
-uint32 inPortL(uint32 port)
+uint32 IOPort::inPortL(uint32 port)
 {
 	uint32 ret;
 

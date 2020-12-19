@@ -1,6 +1,8 @@
 #include <libraries/std/types/CTypes.hpp>
-#include <libraries/std/io/ioport.hpp>
+#include <libraries/std/io/IOPort.hpp>
 #include <kernel/arch.hpp>
+
+using namespace std;
 
 #define PCI_CONFIG 0xCF8
 #define PCI_DATA 0xCFC
@@ -13,8 +15,8 @@ uint32 pciRead(uint32 bus, uint32 device, uint32 function, uint32 offset)
     reg |= (device & 0x1F) << 11;
     reg |= (function & 0x7) << 8;
     reg |= (offset & 0xFF) & 0xFC;
-    outPortL(PCI_CONFIG, reg);
-    return inPortL(PCI_DATA);
+    IOPort::outPortL(PCI_CONFIG, reg);
+    return IOPort::inPortL(PCI_DATA);
 }
 
 void pciWrite(uint32 bus, uint32 device, uint32 function, uint32 offset, uint32 data)
@@ -25,8 +27,8 @@ void pciWrite(uint32 bus, uint32 device, uint32 function, uint32 offset, uint32 
     reg |= (device & 0x1F) << 11;
     reg |= (function & 0x7) << 8;
     reg |= offset & 0xFC;
-    outPortL(PCI_CONFIG, reg);
-    outPortL(PCI_DATA, data);
+    IOPort::outPortL(PCI_CONFIG, reg);
+    IOPort::outPortL(PCI_DATA, data);
 }
 
 uint8 pciFind(uint32 vendor, uint32 device, uint8 *bus, uint8 *dev, uint8 *function)

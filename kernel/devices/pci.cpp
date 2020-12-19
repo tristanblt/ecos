@@ -1,13 +1,13 @@
-#include <libraries/std/types.hpp>
+#include <libraries/std/types/CTypes.hpp>
 #include <libraries/std/io/ioport.hpp>
 #include <kernel/arch.hpp>
 
 #define PCI_CONFIG 0xCF8
 #define PCI_DATA 0xCFC
 
-uint32_t pciRead(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset)
+uint32 pciRead(uint32 bus, uint32 device, uint32 function, uint32 offset)
 {
-    uint32_t reg = 0x80000000;
+    uint32 reg = 0x80000000;
 
     reg |= (bus & 0xFF) << 16;
     reg |= (device & 0x1F) << 11;
@@ -17,9 +17,9 @@ uint32_t pciRead(uint32_t bus, uint32_t device, uint32_t function, uint32_t offs
     return inPortL(PCI_DATA);
 }
 
-void pciWrite(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset, uint32_t data)
+void pciWrite(uint32 bus, uint32 device, uint32 function, uint32 offset, uint32 data)
 {
-    uint32_t reg = 0x80000000;
+    uint32 reg = 0x80000000;
 
     reg |= (bus & 0xFF) << 16;
     reg |= (device & 0x1F) << 11;
@@ -29,9 +29,9 @@ void pciWrite(uint32_t bus, uint32_t device, uint32_t function, uint32_t offset,
     outPortL(PCI_DATA, data);
 }
 
-uint8_t pciFind(uint32_t vendor, uint32_t device, uint8_t *bus, uint8_t *dev, uint8_t *function)
+uint8 pciFind(uint32 vendor, uint32 device, uint8 *bus, uint8 *dev, uint8 *function)
 {
-    uint32_t vendDev, b, d, f, myVendDev;
+    uint32 vendDev, b, d, f, myVendDev;
 
     myVendDev = (vendor & 0xFFFF) | (device << 16);
     for (b = 0; b < 256; b++)
@@ -48,10 +48,10 @@ uint8_t pciFind(uint32_t vendor, uint32_t device, uint8_t *bus, uint8_t *dev, ui
     return (false);
 }
 
-uint8_t pciFind_class2(int8_t class2, uint8_t subclass2, uint8_t *bus, uint8_t *dev, uint8_t *function)
+uint8 pciFind_class2(int8 class2, uint8 subclass2, uint8 *bus, uint8 *dev, uint8 *function)
 {
-    uint32_t b, d, f;
-    uint16_t myClsSub, clsSub;
+    uint32 b, d, f;
+    uint16 myClsSub, clsSub;
 
     myClsSub = class2 | (subclass2 << 8);
     for (b = 0; b < 256; b++)
@@ -68,9 +68,9 @@ uint8_t pciFind_class2(int8_t class2, uint8_t subclass2, uint8_t *bus, uint8_t *
     return (false);
 }
 
-void pci_test()
+void pciest()
 {
-    uint32_t vendDev, b, d, f;
+    uint32 vendDev, b, d, f;
     for (b = 0; b < 256; b++)
         for (d = 0; d < 32; d++)
             for (f = 0; f < 8; f++)

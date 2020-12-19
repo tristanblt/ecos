@@ -1,32 +1,32 @@
 #include <kernel/arch.hpp>
 #include <kernel/memory/mm.hpp>
 
-void frameSetup(uint32_t memSize, uint32_t reservedStart, uint32_t reservedEnd);
+void frameSetup(uint32 memSize, uint32 reservedStart, uint32 reservedEnd);
 
-uint32_t mallocTop, heap;
-mblock_t *rootMblock, *lastBlock;
-uint32_t pageTableTemp[1024] __attribute__((aligned(4096)));
+uint32 mallocTop, heap;
+mblock *rootMblock, *lastBlock;
+uint32 pageTableTemp[1024] __attribute__((aligned(4096)));
 
-static uint32_t expand(uint32_t requestedSize) {
+static uint32 expand(uint32 requestedSize) {
   return (pageMapUntil(mallocTop + requestedSize));
 }
 
-mblock_t *splitHole(mblock_t *b, uint32_t size)
+mblock *splitHole(mblock *b, uint32 size)
 {
-    mblock_t *newHole;
+    mblock *newHole;
 
     if (!b->hole)
         return (nullptr);
-    if ((b->size - (size + sizeof(mblock_t))) < (sizeof(mblock_t))) {
+    if ((b->size - (size + sizeof(mblock))) < (sizeof(mblock))) {
         b->hole = 0;
         return b;
     }
     else {
-        newHole = (mblock_t *)(b->addr + size);
+        newHole = (mblock *)(b->addr + size);
         newHole->magic = MBLOCK_MAGIC;
         newHole->hole = 1;
-        newHole->size = b->size - sizeof(mblock_t) - size;
-        newHole->addr = (b->addr + size + sizeof(mblock_t));
+        newHole->size = b->size - sizeof(mblock) - size;
+        newHole->addr = (b->addr + size + sizeof(mblock));
         b->hole = 0;
         b->size = size;
 
@@ -37,9 +37,9 @@ mblock_t *splitHole(mblock_t *b, uint32_t size)
     }
 }
 
-mblock_t *_find_hole(uint32_t size)
+mblock *_find_hole(uint32 size)
 {
-    mblock_t *b;
+    mblock *b;
 
     b = rootMblock;
     while (b) {
@@ -56,41 +56,41 @@ mblock_t *_find_hole(uint32_t size)
     return (nullptr);
 }
 
-void *malloc(uint32_t size)
+void *malloc(uint32 size)
 {
-    mblock_t *b;
-    uint32_t newHeap;
+    mblock *b;
+    uint32 newHeap;
 
     if (size == 0)
         return (nullptr);
     b = _find_hole(size);
     if (b)
         return (void *)b->addr;
-    if ((mallocTop + size + sizeof(mblock_t)) > heap) {
+    if ((mallocTop + size + sizeof(mblock)) > heap) {
         newHeap = expand(size);
         if(newHeap == heap)
           return (nullptr);
         heap = newHeap;
     }
-    b = (mblock_t *)mallocTop;
+    b = (mblock *)mallocTop;
     b->hole = 0;
     b->magic = MBLOCK_MAGIC;
     b->size = size;
-    b->addr = mallocTop + sizeof(mblock_t);
+    b->addr = mallocTop + sizeof(mblock);
     b->next = nullptr;
     lastBlock->next = b;
     lastBlock = b;
-    mallocTop = (uint32_t)(b->addr + b->size);
-    return ((uint32_t *)b->addr);
+    mallocTop = (uint32)(b->addr + b->size);
+    return ((uint32 *)b->addr);
 }
 
 void mm(multiboot_info_t *mb)
 {
     multiboot_module_t *mod;
-    uint32_t pAddr, pAddrMax, vAddr;
-    uint32_t i = 0, heap = 0, ldKernelLimit;
+    uint32 pAddr, pAddrMax, vAddr;
+    uint32 i = 0, heap = 0, ldKernelLimit;
 
-    ldKernelLimit = (uint32_t)&kernelVaddrEnd;
+    ldKernelLimit = (uint32)&kernelVaddrEnd;
     if (ldKernelLimit == 0)
         PANIC("ld script's invalid Kernel limit");
     heap = ldKernelLimit;
@@ -108,12 +108,12 @@ void mm(multiboot_info_t *mb)
         pageMap(pAddr, vAddr);
     mallocTop = heap;
     heap = (heap & 0xFFFFF000) + 0x1000;
-    rootMblock = (mblock_t *)mallocTop;
+    rootMblock = (mblock *)mallocTop;
     rootMblock->hole = 0;
     rootMblock->magic = MBLOCK_MAGIC;
     rootMblock->size = 1;
-    rootMblock->addr = mallocTop + sizeof(mblock_t);
+    rootMblock->addr = mallocTop + sizeof(mblock);
     rootMblock->next = nullptr;
-    mallocTop = (uint32_t)(rootMblock->addr + rootMblock->size);
+    mallocTop = (uint32)(rootMblock->addr + rootMblock->size);
     lastBlock = rootMblock;
 }

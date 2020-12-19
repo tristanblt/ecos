@@ -12,30 +12,30 @@ void initEcos(ecs::Ecos *ecos)
 
 }
 
-extern "C" int kmain(uint32_t multiboot_info)
+extern "C" int kmain(uint32 multiboot_info)
 {
     disable();
     arch();
     mm((multiboot_info_t *)multiboot_info);
     serial();
 
-    serialPutstr((uint8_t *)"\n\n");
-    serialPutstr((uint8_t *)"#####  #####  #######  #####\n");
-    serialPutstr((uint8_t *)"##     ##     ##   ##  ##   \n");
-    serialPutstr((uint8_t *)"#####  ##     ##   ##  #####\n");
-    serialPutstr((uint8_t *)"##     ##     ##   ##     ##\n");
-    serialPutstr((uint8_t *)"#####  #####  #######  #####\n");
-    serialPutstr((uint8_t *)"\n\nInit OS...\n");
+    serialPutstr((uint8 *)"\n\n");
+    serialPutstr((uint8 *)"#####  #####  #######  #####\n");
+    serialPutstr((uint8 *)"##     ##     ##   ##  ##   \n");
+    serialPutstr((uint8 *)"#####  ##     ##   ##  #####\n");
+    serialPutstr((uint8 *)"##     ##     ##   ##     ##\n");
+    serialPutstr((uint8 *)"#####  #####  #######  #####\n");
+    serialPutstr((uint8 *)"\n\nInit OS...\n");
 
-    serialPutstr((uint8_t *)"-> Init VESA mode\n");
+    serialPutstr((uint8 *)"-> Init VESA mode\n");
     VbeVideoMode vesa;
     vesa.init();
 
-    serialPutstr((uint8_t *)"-> Init ECS environnement\n");
+    serialPutstr((uint8 *)"-> Init ECS environnement\n");
     ecs::Ecos ecos;
 
     initEcos(&ecos);
 
-    serialPutstr((uint8_t *)"-> Run ECOS\n");
+    serialPutstr((uint8 *)"-> Run ECOS\n");
     ecos.run();
 }

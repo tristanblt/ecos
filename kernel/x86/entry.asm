@@ -41,31 +41,31 @@ start:
 
     mov     eax, 0x0
     mov     ebx, 0x0
-    .fill_table0:
+    .fillable0:
          mov    ecx, ebx
          or     ecx, 3
-         mov    [page_table0+kernel_virt2phys+eax*4], ecx
+         mov    [pageable0+kernel_virt2phys+eax*4], ecx
          add    ebx, 4096
          inc    eax
          cmp    eax, 1024
          je     .end0
-         jmp    .fill_table0
+         jmp    .fillable0
     .end0:
 
     mov     eax, 0x0
     mov     ebx, 0x100000
-    .fill_table:
+    .fillable:
          mov    ecx, ebx
          or     ecx, 3
-         mov    [page_table768+kernel_virt2phys+eax*4], ecx
+         mov    [pageable768+kernel_virt2phys+eax*4], ecx
          add    ebx, 4096
          inc    eax
          cmp    eax, 1024
          je     .end
-         jmp    .fill_table
+         jmp    .fillable
     .end:
 
-    mov     eax, page_table0
+    mov     eax, pageable0
     add     eax, kernel_virt2phys
     and     eax, 0xFFFFF000
     or      eax, 3
@@ -73,7 +73,7 @@ start:
     add     ebx, kernel_virt2phys
     mov     [ebx], eax
 
-    mov     eax, page_table768
+    mov     eax, pageable768
     add     eax, kernel_virt2phys
     and     eax, 0xFFFFF000
     or      eax, 3
@@ -91,10 +91,10 @@ start:
 
     mov     cr0, eax
 
-    lea     ebx, [go_to_virtual]
+    lea     ebx, [goo_virtual]
     jmp     ebx
 
-go_to_virtual:
+goo_virtual:
     push    edx
     call    kmain
 
@@ -108,9 +108,9 @@ align 0x1000
 
 pageDirectory:
     resb  0x1000
-page_table0:
+pageable0:
     resb  0x1000
-page_table768:
+pageable768:
     resb  0x1000
 
 kernel_stack_end:

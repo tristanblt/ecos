@@ -4,13 +4,13 @@
 
 extern "C" void loadIdt();
 
-isrCallVector_t isrCallVector;
-isrCallVector_t *isrCallPtrVector = 0;
+isrCallVector isrCallVectorDecl;
+isrCallVector *isrCallPtrVector = 0;
 
 struct faultName
 {
     char *name;
-    uint8_t hasErrcode;
+    uint8 hasErrcode;
 };
 
 struct faultName faultNames[] = {
@@ -47,17 +47,17 @@ struct faultName faultNames[] = {
     {"Security Exception", true},
     {nullptr, false}};
 
-extern "C" uint32_t isrFault(intRegs_t *regs)
+extern "C" uint32 isrFault(intRegs *regs)
 {
 }
 
-uint32_t pageFaultHandler(intRegs_t *regs)
+uint32 pageFaultHandler(intRegs *regs)
 {
     while (1)
         __asm__ __volatile__("cli\n");
 }
 
-uint32_t irq7Handler(intRegs_t *regs)
+uint32 irq7Handler(intRegs *regs)
 {
 }
 
@@ -71,6 +71,6 @@ void idt()
 {
     pic();
     loadIdt();
-    isrCallPtrVector = &isrCallVector;
+    isrCallPtrVector = &isrCallVectorDecl;
     isrInstall();
 }

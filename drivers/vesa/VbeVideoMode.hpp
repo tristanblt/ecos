@@ -3,7 +3,8 @@
 
 #include <drivers/interfaces/IVideoMode.hpp>
 #include <kernel/arch.hpp>
-#include <libraries/std/io/ioport.hpp>
+#include <libraries/std/io/IOPort.hpp>
+#include <libraries/std/Memory.hpp>
 
 #define VESA_VBE_VENDOR 0x1234
 #define VESA_VBE_DEVICE 0x1111
@@ -31,11 +32,6 @@
 #define VBE_WINDOW_HEIGHT 900
 #define VBE_WINDOW_DEPTH 32
 
-void *memset32(void *dest, uint32_t val, uint32_t len);
-void *memset8(void *dest, uint8_t val, uint32_t len);
-void *malloc(uint32_t size);
-void memcpy32(void *src, void *dst, uint32_t size);
-
 class VbeVideoMode : public IVideoMode
 {
 public:
@@ -45,44 +41,44 @@ public:
     bool init();
 
     // draw
-    void drawPixel(vector2d_t position, color_t color);
-    void drawRect(rect_t rect, color_t color);
-    void drawCircle(vector2d_t position, uint32_t radius, color_t color);
-    void drawHorizontalLine(vector2d_t position, uint32_t size, color_t color);
+    void drawPixel(vector2d position, color color);
+    void drawRect(rect rect, color color);
+    void drawCircle(vector2d position, uint32 radius, color color);
+    void drawHorizontalLine(vector2d position, uint32 size, color color);
 
     // display
     void display();
 
 private:
     // init
-    void initDisplay(uint16_t width, uint16_t height, uint16_t depth);
+    void initDisplay(uint16 width, uint16 height, uint16 depth);
 
     // utils
-    void vbeWrite(uint16_t index, uint16_t value);
+    void vbeWrite(uint16 index, uint16 value);
     void vbeDisable();
     void vbeEnable();
-    void vbeAreaGrow(vector2d_t position);
+    void vbeAreaGrow(vector2d position);
 
-    uint8_t _vbeBus;
-    uint8_t _vbeDev;
-    uint8_t _vbeFunction;
-    uint8_t *_vbeFb;
-    uint32_t *_vbeFbDouble[2];
-    uint8_t _vbeFbCurrent;
-    uint8_t _vbeFbPages;
-    uint16_t _width;
-    uint16_t _height;
-    uint16_t _depth;
-    uint32_t _scanline;
-    uint32_t _pixelSize;
-    uint8_t _fontSizeX;
-    uint8_t _fontSizeY;
-    uint32_t _updateX1;
-    uint32_t _updateX0;
-    uint32_t _updateY1;
-    uint32_t _updateY0;
+    uint8 _vbeBus;
+    uint8 _vbeDev;
+    uint8 _vbeFunction;
+    uint8 *_vbeFb;
+    uint32 *_vbeFbDouble[2];
+    uint8 _vbeFbCurrent;
+    uint8 _vbeFbPages;
+    uint16 _width;
+    uint16 _height;
+    uint16 _depth;
+    uint32 _scanline;
+    uint32 _pixelSize;
+    uint8 _fontSizeX;
+    uint8 _fontSizeY;
+    uint32 _updateX1;
+    uint32 _updateX0;
+    uint32 _updateY1;
+    uint32 _updateY0;
 
-    uint32_t *_pixelBuffer;
+    uint32 *_pixelBuffer;
 };
 
 #endif /* !VESAVIDEOMODE_HPP_ */

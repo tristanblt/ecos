@@ -1,15 +1,15 @@
-#include <libraries/std/types.hpp>
+#include <libraries/std/types/CTypes.hpp>
 #include <libraries/std/io/ioport.hpp>
 #include <kernel/devices/bios.hpp>
 
-uint16_t SERIAL_PORT[4];
+uint16 SERIAL_PORT[4];
 
-void serialPutchar(uint8_t c)
+void serialPutchar(uint8 c)
 {
     outPortB(SERIAL_PORT[0], c);
 }
 
-void serialPutstr(uint8_t *str)
+void serialPutstr(uint8 *str)
 {
     for (int i = 0; str[i]; i++)
         outPortB(SERIAL_PORT[0], str[i]);
@@ -17,7 +17,7 @@ void serialPutstr(uint8_t *str)
 
 void serial()
 {
-    uint32_t i;
+    uint32 i;
 
     if ((SERIAL_PORT[0] = biosReadWord(0x40, 0x0)) == 0)
         SERIAL_PORT[0] = 0x3F8;

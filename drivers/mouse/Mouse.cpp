@@ -1,20 +1,20 @@
 #include "Mouse.hpp"
 
-void mouseWrite(uint8_t write)
+void mouseWrite(uint8 write)
 {
     outPortB(0x64, 0xD4);
     outPortB(0x60, write);
 }
 
-uint8_t mouseRead()
+uint8 mouseRead()
 {
     return (inPortB(0x60));
 }
 
-uint32_t mouseHandler(intRegs_t *regs)
+uint32 mouseHandler(intRegs *regs)
 {
-    serialPutstr((uint8_t *)"mouse packet\n");
-    // static uint8_t status, cicle = 0;
+    serialPutstr((uint8 *)"mouse packet\n");
+    // static uint8 status, cicle = 0;
     // static struct mouse_packet pkt;
 
     // status = inPortB(0x64);
@@ -29,18 +29,18 @@ uint32_t mouseHandler(intRegs_t *regs)
     //         break;
     //     case 1:
     //         if (pkt.flags & 0x10) // is dY negative?
-    //             pkt.dx = (int32_t)mouse_read() | 0xFFFFFF00;
+    //             pkt.dx = (int32)mouse_read() | 0xFFFFFF00;
     //         else
-    //             pkt.dx = (int32_t)mouse_read();
+    //             pkt.dx = (int32)mouse_read();
 
     //         cicle++;
     //         break;
     //     case 2:
 
     //         if (pkt.flags & 0x20) // is dY negative?
-    //             pkt.dy = (int32_t)mouse_read() | 0xFFFFFF00;
+    //             pkt.dy = (int32)mouse_read() | 0xFFFFFF00;
     //         else
-    //             pkt.dy = (int32_t)mouse_read();
+    //             pkt.dy = (int32)mouse_read();
 
     //         if ((pkt.flags & 0x80) || (pkt.flags & 0x40) == 0)
     //         { // x/y overflow ?
@@ -50,7 +50,7 @@ uint32_t mouseHandler(intRegs_t *regs)
     //             //   pkt.dy =
     //             // }
 
-    //             memcpy(&pkt, packet, sizeof(struct mouse_packet));
+    //             Memory::cpy(&pkt, packet, sizeof(struct mouse_packet));
 
     //             queue_add(&mouse_queue, packet);
     //             wake_up(&mouse_wait);
@@ -68,7 +68,7 @@ uint32_t mouseHandler(intRegs_t *regs)
 
 Mouse::Mouse()
 {
-    uint8_t status;
+    uint8 status;
 
     outPortB(0x64, 0xA8);
     outPortB(0x64, 0x20);

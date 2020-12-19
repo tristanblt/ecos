@@ -8,8 +8,8 @@ void tss();
 extern "C" void loadGdt(struct gdt *);
 extern "C" void loadTss();
 
-void gdtEntrySetup(struct gdtEntry *gdte, uint32_t base, uint32_t limit,
-                     uint32_t access, uint32_t flags);
+void gdtEntrySetup(struct gdtEntry *gdte, uint32 base, uint32 limit,
+                     uint32 access, uint32 flags);
 
 void gdt()
 {
@@ -20,17 +20,17 @@ void gdt()
     gdtEntrySetup(&(gdtEntries[2]), 0x00000000, 0xFFFFFFFF, 0x92, 0xC); // kernel data
     gdtEntrySetup(&(gdtEntries[3]), 0x00000000, 0xFFFFFFFF, 0xFA, 0xC); // user code
     gdtEntrySetup(&(gdtEntries[4]), 0x00000000, 0xFFFFFFFF, 0xF2, 0xC); // user data
-    gdtEntrySetup(&(gdtEntries[5]), VIRTUAL_TO_PHYSICAL(&tss), sizeof(tssEntry_t), 0x89, 0xC);
+    gdtEntrySetup(&(gdtEntries[5]), VIRTUAL_TO_PHYSICAL(&tss), sizeof(tssEntryStruct), 0x89, 0xC);
 
     gdtr.size = 8 * 6;
-    gdtr.offset = (uint32_t)&gdtEntries[0];
+    gdtr.offset = (uint32)&gdtEntries[0];
 
     loadGdt(&gdtr);
     loadTss();
 }
 
-void gdtEntrySetup(struct gdtEntry *gdte, uint32_t base, uint32_t limit,
-                     uint32_t access, uint32_t flags)
+void gdtEntrySetup(struct gdtEntry *gdte, uint32 base, uint32 limit,
+                     uint32 access, uint32 flags)
 {
 
     gdte->low = base & 0xFFFF;

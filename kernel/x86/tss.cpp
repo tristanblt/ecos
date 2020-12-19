@@ -1,6 +1,6 @@
 #include "arch.hpp"
 
-tssEntry_t kernelTss;
+tssEntryStruct kernelTss;
 
 void tss()
 {
@@ -12,7 +12,7 @@ void tss()
     kernelTss.iomapBase = 104;
 }
 
-void tssSetEsp0(uint32_t esp0)
+void tssSetEsp0(uint32 esp0)
 {
     kernelTss.esp0 = esp0;
 }

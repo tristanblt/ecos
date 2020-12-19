@@ -26,19 +26,19 @@ void pic(void)
     __asm__ __volatile__("nop");
 }
 
-static uint16_t ocw1 = 0xFFFB;
+static uint16 ocw1 = 0xFFFB;
 
-void irqEnable(uint8_t irq)
+void irqEnable(uint8 irq)
 {
-    ocw1 &= (uint16_t) ~((1 << irq));
+    ocw1 &= (uint16) ~((1 << irq));
 
     if (irq < 8)
-        outPortB(PIC_MASTER_DATA, (uint8_t)(ocw1 & 0xFF));
+        outPortB(PIC_MASTER_DATA, (uint8)(ocw1 & 0xFF));
     else
-        outPortB(PIC_SLAVE_DATA, (uint8_t)(ocw1 >> 8));
+        outPortB(PIC_SLAVE_DATA, (uint8)(ocw1 >> 8));
 }
 
-void picAcknowledge(uint8_t irq)
+void picAcknowledge(uint8 irq)
 {
     if (irq > 7)
         outPortB(PIC_SLAVE_CTRL, 0x20);

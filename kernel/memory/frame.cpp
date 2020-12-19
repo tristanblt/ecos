@@ -3,26 +3,26 @@
 
 #define BITMAP_SIZE 0x20000
 
-uint32_t framesCount, frameIdx;
-uint32_t framesFree;
-uint8_t physicalBitmap[BITMAP_SIZE];
+uint32 framesCount, frameIdx;
+uint32 framesFree;
+uint8 physicalBitmap[BITMAP_SIZE];
 
-void frameSet(uint32_t i)
+void frameSet(uint32 i)
 {
     physicalBitmap[i / 8] = 1 << (i % 8);
     framesFree--;
 }
 
-void frameSetAddress(uint32_t addr)
+void frameSetAddress(uint32 addr)
 {
-    uint32_t i;
+    uint32 i;
 
     i = addr / FRAME_SIZE;
     physicalBitmap[i / 8] = 1 << (i % 8);
     framesFree--;
 }
 
-void frameUnset(uint32_t i)
+void frameUnset(uint32 i)
 {
     if (i > framesCount)
         return;
@@ -30,9 +30,9 @@ void frameUnset(uint32_t i)
     framesFree++;
 }
 
-void frameUnsetAddress(uint32_t addr)
+void frameUnsetAddress(uint32 addr)
 {
-    uint32_t i;
+    uint32 i;
 
     i = addr / FRAME_SIZE;
     if (i > framesCount)
@@ -41,9 +41,9 @@ void frameUnsetAddress(uint32_t addr)
     framesFree++;
 }
 
-void frameSetup(uint32_t memSize, uint32_t reservedStart, uint32_t reservedEnd)
+void frameSetup(uint32 memSize, uint32 reservedStart, uint32 reservedEnd)
 {
-    uint32_t i;
+    uint32 i;
 
     framesCount = memSize / FRAME_SIZE;
     framesFree = framesCount;
@@ -54,9 +54,9 @@ void frameSetup(uint32_t memSize, uint32_t reservedStart, uint32_t reservedEnd)
     }
 }
 
-uint32_t frameGetBlk(uint32_t blkSz)
+uint32 frameGetBlk(uint32 blkSz)
 {
-    uint32_t blkLeft, blkStart, i, iByte, iBit;
+    uint32 blkLeft, blkStart, i, iByte, iBit;
 
     blkLeft = blkSz;
     for (i = 0; i < framesCount; i++) {
@@ -77,12 +77,12 @@ uint32_t frameGetBlk(uint32_t blkSz)
     for (i = blkStart; i < (blkStart + blkSz); i++)
         frameSet(i);
     frameIdx += blkSz;
-    return ((uint32_t)(blkStart * FRAME_SIZE));
+    return ((uint32)(blkStart * FRAME_SIZE));
 }
 
-uint32_t frameGet()
+uint32 frameGet()
 {
-    uint32_t iByte, iBit, i;
+    uint32 iByte, iBit, i;
 
     if (framesFree == 0)
         return 0;
@@ -94,23 +94,23 @@ uint32_t frameGet()
             continue;
         frameSet(i);
         frameIdx++;
-        return ((uint32_t)((iByte * 8 + iBit) * FRAME_SIZE));
+        return ((uint32)((iByte * 8 + iBit) * FRAME_SIZE));
     }
     frameIdx = 0;
     return (frameGet());
 }
 
-void frameFree(uint32_t addr)
+void frameFree(uint32 addr)
 {
     frameUnsetAddress(addr);
 }
 
-uint32_t frameCount()
+uint32 frameCount()
 {
     return (framesCount);
 }
 
-uint32_t frameFreeCount()
+uint32 frameFreeCount()
 {
     return (framesFree);
 }

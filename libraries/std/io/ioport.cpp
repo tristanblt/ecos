@@ -10,40 +10,40 @@ void disable(void)
     __asm__ __volatile__("cli");
 }
 
-void outPortB(uint32_t port, uint8_t value)
+void outPortB(uint32 port, uint8 value)
 {
 	__asm__ __volatile__("outb %%al,%%dx"::"d" (port), "a" (value));
 }
 
-void outPortW(uint32_t port, uint16_t value)
+void outPortW(uint32 port, uint16 value)
 {
 	__asm__ __volatile__("outw %%ax,%%dx"::"d" (port), "a" (value));
 }
 
-void outPortL(uint32_t port, uint32_t value)
+void outPortL(uint32 port, uint32 value)
 {
 	__asm__ __volatile__("outl %%eax,%%dx"::"d" (port), "a" (value));
 }
 
-unsigned char inPortB(uint32_t port)
+unsigned char inPortB(uint32 port)
 {
-	uint8_t ret;
+	uint8 ret;
 
 	__asm__ __volatile__("inb %%dx,%%al":"=a" (ret):"d"(port));
 	return (ret);
 }
 
-uint16_t inPortW(uint32_t port)
+uint16 inPortW(uint32 port)
 {
-	uint16_t ret;
+	uint16 ret;
 
 	__asm__ __volatile__("inw %%dx,%%ax":"=a" (ret):"d"(port));
 	return (ret);
 }
 
-uint32_t inPortL(uint32_t port)
+uint32 inPortL(uint32 port)
 {
-	uint32_t ret;
+	uint32 ret;
 
 	__asm__ __volatile__("inl %%dx,%%eax":"=a" (ret):"d"(port));
 	return (ret);

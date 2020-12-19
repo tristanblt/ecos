@@ -1,47 +1,47 @@
 #include "arch.hpp"
 #include <kernel/memory/mm.hpp>
 
-uint32_t frameGet();
-uint32_t frameFree(uint32_t addr);
+uint32 frameGet();
+uint32 frameFree(uint32 addr);
 
-void pageMap(uint32_t pAddr, uint32_t vAddr)
+void pageMap(uint32 pAddr, uint32 vAddr)
 {
-    uint32_t *pd, *table, pIdx, tIdx;
+    uint32 *pd, *table, pIdx, tIdx;
 
     __asm__ __volatile__("movl %%cr3, %%eax; movl %%eax, %0;":"=m"(pd)::"%eax");
-    pd = (uint32_t *)((uint32_t)pd & 0xFFFFF000);
+    pd = (uint32 *)((uint32)pd & 0xFFFFF000);
     tIdx = vAddr >> 22;
     if ((pd[tIdx] & 0xFFFFF000) == 0)
         pd[tIdx] = frameGet();
     pd[tIdx] = pd[tIdx] | PAGE_FLAG_PRESENT | PAGE_FLAG_RW;
-    table = (uint32_t *)(pd[tIdx] & 0xFFFFF000);
+    table = (uint32 *)(pd[tIdx] & 0xFFFFF000);
     pIdx = (vAddr >> 12) & 0x3FF;
     table[pIdx] = (pAddr & 0xFFFFF000) | PAGE_FLAG_PRESENT | PAGE_FLAG_RW;
 }
 
-void pageUnmap(uint32_t vAddr)
+void pageUnmap(uint32 vAddr)
 {
-    uint32_t *pd, *table, pIdx, tIdx;
+    uint32 *pd, *table, pIdx, tIdx;
 
     __asm__ __volatile__("movl %%cr3, %%eax; movl %%eax, %0;":"=m"(pd)::"%eax");
-    pd = (uint32_t *)((uint32_t)pd & 0xFFFFF000);
+    pd = (uint32 *)((uint32)pd & 0xFFFFF000);
     tIdx = vAddr >> 22;
     pd[tIdx] = pd[tIdx] | PAGE_FLAG_PRESENT | PAGE_FLAG_RW;
-    table = (uint32_t *)(pd[tIdx] & 0xFFFFF000);
+    table = (uint32 *)(pd[tIdx] & 0xFFFFF000);
     pIdx = (vAddr >> 12) & 0x3FF;
     frameFree(table[pIdx] & 0xFFFFF000);
     table[pIdx] = 0;
 }
 
-uint32_t pageUpper() {
-    uint32_t *pd, *table, pIdx, tIdx, vAddr;
+uint32 pageUpper() {
+    uint32 *pd, *table, pIdx, tIdx, vAddr;
 
     __asm__ __volatile__("movl %%cr3, %%eax; movl %%eax, %0;":"=m"(pd)::"%eax");
-    pd = (uint32_t *)((uint32_t)pd & 0xFFFFF000);
+    pd = (uint32 *)((uint32)pd & 0xFFFFF000);
     vAddr = KERNEL_BASE;
     for (vAddr = KERNEL_BASE; vAddr < KERNEL_LIMIT; vAddr += 0x1000) {
         tIdx = vAddr >> 22;
-        table = (uint32_t *)(pd[tIdx] & 0xFFFFF000);
+        table = (uint32 *)(pd[tIdx] & 0xFFFFF000);
         pIdx = (vAddr >> 12) & 0x3FF;
         if (table[pIdx] == 0)
             return (vAddr - 0x1000);
@@ -49,9 +49,9 @@ uint32_t pageUpper() {
     return (vAddr - 0x1000);
 }
 
-uint32_t pageMapUntil(uint32_t newLimit)
+uint32 pageMapUntil(uint32 newLimit)
 {
-    uint32_t oldLimit, pAddr;
+    uint32 oldLimit, pAddr;
 
     oldLimit = pageUpper() + 0x1000;
     newLimit &= 0xFFFFF000;
@@ -65,9 +65,9 @@ uint32_t pageMapUntil(uint32_t newLimit)
     return (newLimit + 0x1000);
 }
 
-uint32_t pageFreeAbove(uint32_t limit)
+uint32 pageFreeAbove(uint32 limit)
 {
-    uint32_t newPageLimit, pageLimit;
+    uint32 newPageLimit, pageLimit;
 
     newPageLimit = (limit & 0xFFFFF000) + 0x1000;
     pageLimit = pageUpper();
@@ -78,10 +78,10 @@ uint32_t pageFreeAbove(uint32_t limit)
     return (newPageLimit);
 }
 
-void pageTableSet(uint32_t virtAddr, uint32_t *pgTable, uint32_t flags)
+void pageTableSet(uint32 virtAddr, uint32 *pgTable, uint32 flags)
 {
-    uint32_t *pd;
+    uint32 *pd;
 
     __asm__ __volatile__("movl %%cr3, %%eax; movl %%eax, %0;":"=m"(pd)::"%eax");
-    pd[virtAddr >> 22] = (uint32_t)pgTable | flags;
+    pd[virtAddr >> 22] = (uint32)pgTable | flags;
 }

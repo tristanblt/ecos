@@ -56,9 +56,9 @@ void Serial::putEcosLogo()
 void Serial::putTask(uint8 *str, bool done)
 {
     if (done) {
-        putstr((uint8 *)"[done] ");
+        putstr((uint8 *)"[done]   ");
     } else {
-        putstr((uint8 *)"[start] ");
+        putstr((uint8 *)"[start]  ");
     }
     putstr(str);
     putstr((uint8 *)"\n");

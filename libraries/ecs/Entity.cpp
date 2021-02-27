@@ -4,5 +4,5 @@ using namespace ecs;
 
 void Entity::addComponent()
 {
-    // drvs::Serial::putstr((uint8 *)"hihi");
+    drvs::Serial::putstr((uint8 *)"hihi");
 }

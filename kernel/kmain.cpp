@@ -14,16 +14,15 @@ using namespace drvs;
 
 void initEcos(Ecos *ecos)
 {
-    systems::WindowSystem *system = (systems::WindowSystem *) malloc(sizeof(systems::WindowSystem));
-
+    systems::WindowSystem *system = new systems::WindowSystem();
     system->start();
-    // ecos->addSystem(system);
+    ecos->addSystem(system);
 
-    // Entity *e = ecos->addEntity();
-    // e->addComponent();
+    Entity *e = ecos->addEntity();
+    e->addComponent();
 
-    // e = ecos->addEntity();
-    // e->addComponent();
+    e = ecos->addEntity();
+    e->addComponent();
 }
 
 extern "C" int kmain(uint32 multiboot_info)
@@ -48,10 +47,8 @@ extern "C" int kmain(uint32 multiboot_info)
 
 
     Serial::putTask((uint8 *)"ECS Environement", false);
-
     Ecos ecos;
     initEcos(&ecos);
-
     Serial::putTask((uint8 *)"ECS Environement", true);
 
 

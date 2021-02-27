@@ -4,15 +4,15 @@ using namespace ecs;
 
 void Ecos::start()
 {
-
+    // _systems[0]->start();
 }
 
 void Ecos::run()
 {
     start();
-    while (true) {
+    // while (true) {
 
-    }
+    // }
     stop();
 }
 

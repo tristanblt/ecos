@@ -3,61 +3,71 @@
 
 #include <libraries/std/types/CTypes.hpp>
 #include <kernel/panic.hpp>
+#include <drivers/serial/Serial.hpp>
 
 void *malloc(uint32 size);
 void free(void *ptr);
 
-template <typename T>
-class DynamicList {
-    public:
-        DynamicList()
-        {
-            _list = nullptr;
-            _count = 0;
+namespace std {
+    template <typename T>
+    class DynamicList {
+        public:
+            DynamicList()
+            {
+                _list = nullptr;
+                _count = 0;
 
-        }
-
-        ~DynamicList()
-        {
-
-        }
-
-        T *add()
-        {
-            T *element = (T *)malloc(sizeof(T));
-
-            if (!element)
-                PANIC("malloc() fail");
-            addElementToList(element);
-            return (element);
-        }
-
-        T *add(T *element)
-        {
-            addElementToList(element);
-            return (element);
-        }
-
-    private:
-        void addElementToList(T *element)
-        {
-            void **savedList = _list;
-
-            _count++;
-            _list = (void **)malloc(sizeof(void *) * (_count + 1));
-            if (!_list)
-                PANIC("malloc() fail");
-            if (savedList) {
-                for (uint32 i = 0; i < (_count - 1); i++)
-                    _list[i] = savedList[i];
-                free(savedList);
             }
-            _list[_count - 1] = element;
-            _list[_count] = nullptr;
-        }
 
-        void **_list;
-        uint32 _count;
-};
+            ~DynamicList()
+            {
+
+            }
+
+            T *add()
+            {
+                T *element = (T *)malloc(sizeof(T));
+
+                if (!element)
+                    PANIC("malloc() fail");
+                addElementToList(element);
+                return (element);
+            }
+
+            T *add(T *element)
+            {
+                addElementToList(element);
+                return (element);
+            }
+
+            T *operator[](uint32 index)
+            {
+                if (index >= _count)
+                    return (nullptr);
+                return ((T *)_list[index]);
+            }
+
+        private:
+            void addElementToList(T *element)
+            {
+                T **savedList = _list;
+
+                _count++;
+                _list = (T **)malloc(sizeof(T *) * (_count + 1));
+                if (!_list)
+                    PANIC("malloc() fail");
+                if (savedList) {
+                    for (uint32 i = 0; i < (_count - 1); i++)
+                        _list[i] = savedList[i];
+                    free(savedList);
+                }
+                _list[_count - 1] = element;
+                _list[_count] = nullptr;
+            }
+
+            T **_list;
+            uint32 _count;
+    };
+}
 
 #endif /* !DYNAMICLIST_HPP_ */

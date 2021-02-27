@@ -106,13 +106,13 @@ void VbeVideoMode::drawRect(rect rect, color color)
 
 void VbeVideoMode::drawCircle(vector2d position, uint32 radius, color color)
 {
-    int r2 = radius * radius;
-    int area = r2 << 2;
-    int rr = radius << 1;
+    uint32 r2 = radius * radius;
+    uint32 area = r2 << 2;
+    uint32 rr = radius << 1;
 
-    for (int i = 0; i < area; i++) {
-        int tx = (i % rr) - radius;
-        int ty = (i / rr) - radius;
+    for (uint32 i = 0; i < area; i++) {
+        uint32 tx = (i % rr) - radius;
+        uint32 ty = (i / rr) - radius;
 
         if (tx * tx + ty * ty <= r2)
             drawPixel({position.x + tx, position.y + ty}, color);

@@ -122,3 +122,23 @@ void mm(multiboot_info_t *mb)
     mallocTop = (uint32)(rootMblock->addr + rootMblock->size);
     lastBlock = rootMblock;
 }
+
+void *operator new(uint64 size)
+{
+    return (malloc(size));
+}
+
+void *operator new[](uint64 size)
+{
+    return (malloc(size));
+}
+
+void operator delete(void *p)
+{
+    free(p);
+}
+
+void operator delete[](void *p)
+{
+    free(p);
+}

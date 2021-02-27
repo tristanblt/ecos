@@ -8,7 +8,6 @@ SECTIONS
 {
    . = VADDR_BASE;
    kernelVaddrStart = .;
-   _kernelVaddrStart = .;
    kernelPaddrStart = PADDR_BASE; _kernelPaddrStart = PADDR_BASE;
 
    .multiboot ALIGN (0x1000) : AT(PADDR_BASE)
@@ -18,25 +17,30 @@ SECTIONS
 
    .text ALIGN (0x1000) :
    {
-       *(.text)
-   }
-
-   .rodata ALIGN (0x1000):
-   {
+       *(.text*)
        *(.rodata*)
+       *(.gnu.linkonce.t.*)
    }
 
    .data ALIGN (0x1000) :
    {
-       *(.data)
+       *(.data*)
+
+       *(.gnu.linkonce.d.*)
    }
 
    .bss ALIGN (0x1000) :
    {
-       *(.bss)
+       *(.bss*)
        *(COMMON)
+       *(.gnu.linkonce.b.*)
        kernelPaddrEnd = .; _kernelPaddrEnd = .;
    }
+
    kernelVaddrEnd = .;
-   _kernelVaddrEnd = .;
+
+   /DISCARD/ :
+   {
+        *(.comment)
+   }
  }

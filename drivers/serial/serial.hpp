@@ -11,6 +11,7 @@ namespace drvs {
             static void init();
             static void putstr(uint8 *str);
             static void putchar(uint8 c);
+            static uint32 putint(uint32 n);
 
             static void putEcosLogo();
             static void putTask(uint8 *str, bool done);

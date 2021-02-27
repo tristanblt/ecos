@@ -3,7 +3,7 @@
 
 #include <libraries/ecs/Entity.hpp>
 #include <libraries/ecs/interfaces/ISystem.hpp>
-#include <libraries/std/dynamicList/DynamicList.hpp>
+#include <drivers/serial/Serial.hpp>
 
 namespace ecs {
     class Ecos {
@@ -22,8 +22,8 @@ namespace ecs {
             void start();
             void stop();
 
-            DynamicList<Entity> _entities;
-            DynamicList<ISystem> _systems;
+            std::DynamicList<Entity> _entities;
+            std::DynamicList<ISystem> _systems;
     };
 }
 

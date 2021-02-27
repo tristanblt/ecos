@@ -7,17 +7,34 @@ uint16 SERIAL_PORT[4];
 
 void Serial::putchar(uint8 c)
 {
-    #ifdef SERIAL_DEBUG
+#ifdef SERIAL_DEBUG
     IOPort::outPortB(SERIAL_PORT[0], c);
-    #endif
+#endif
 }
 
 void Serial::putstr(uint8 *str)
 {
-    #ifdef SERIAL_DEBUG
+#ifdef SERIAL_DEBUG
     for (int i = 0; str[i]; i++)
         putchar(str[i]);
-    #endif
+#endif
+}
+
+uint32 Serial::putint(uint32 n)
+{
+#ifdef SERIAL_DEBUG
+    if (n < 0) {
+        putchar('-');
+        n = -n;
+    }
+    if (n >= 10) {
+        putint(n / 10);
+        putchar(n % 10 + '0');
+    }
+    if (n < 10)
+        putchar(n % 10 + '0');
+    return (n);
+#endif
 }
 
 void Serial::init()
@@ -32,7 +49,8 @@ void Serial::init()
         SERIAL_PORT[2] = 0x3E8;
     if ((SERIAL_PORT[3] = biosReadWord(0x40, 0x6)) == 0)
         SERIAL_PORT[3] = 0x2E8;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++)
+    {
         IOPort::outPortB(SERIAL_PORT[i] + 1, 0x00);
         IOPort::outPortB(SERIAL_PORT[i] + 3, 0x80);
         IOPort::outPortB(SERIAL_PORT[i] + 0, 0x03);
@@ -55,9 +73,12 @@ void Serial::putEcosLogo()
 
 void Serial::putTask(uint8 *str, bool done)
 {
-    if (done) {
+    if (done)
+    {
         putstr((uint8 *)"[done]   ");
-    } else {
+    }
+    else
+    {
         putstr((uint8 *)"[start]  ");
     }
     putstr(str);

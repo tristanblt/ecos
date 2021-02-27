@@ -7,5 +7,6 @@ typedef int __attribute__((__may_alias__)) int32;
 typedef unsigned char __attribute__((__may_alias__)) uint8;
 typedef unsigned short __attribute__((__may_alias__)) uint16;
 typedef unsigned int __attribute__((__may_alias__)) uint32;
+typedef unsigned long int __attribute__((__may_alias__)) uint64;
 
 #endif

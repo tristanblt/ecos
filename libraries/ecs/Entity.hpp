@@ -2,6 +2,8 @@
 #define ENTITY_HPP_
 
 #include <drivers/serial/Serial.hpp>
+#include <libraries/std/dynamicList/DynamicList.hpp>
+#include <libraries/ecs/interfaces/IComponent.hpp>
 
 namespace ecs {
     class Entity {
@@ -15,8 +17,8 @@ namespace ecs {
 
             void getComponentModel();
 
-        protected:
         private:
+            std::DynamicList<IComponent> _components;
     };
 }
 

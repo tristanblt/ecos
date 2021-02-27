@@ -7,7 +7,7 @@ WARNING := no
 SERIAL_DEBUG := yes
 KERNEL_NAME := $(KERNEL)_$(ARCH)
 
-PROJDIRS := kernel drivers libraries
+PROJDIRS := kernel drivers libraries systems components
 
 C_SRCFILES := $(shell find $(PROJDIRS) -type f -name \*.c)
 CXX_SRCFILES := $(shell find $(PROJDIRS) -type f -name \*.cpp)

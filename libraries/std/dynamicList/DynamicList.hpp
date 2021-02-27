@@ -26,10 +26,10 @@ namespace std {
 
             T *add()
             {
-                T *element = (T *)malloc(sizeof(T));
+                T *element = new T();
 
                 if (!element)
-                    PANIC("malloc() fail");
+                    PANIC("new() fail");
                 addElementToList(element);
                 return (element);
             }
@@ -47,6 +47,11 @@ namespace std {
                 return ((T *)_list[index]);
             }
 
+            uint32 size()
+            {
+                return (_count);
+            }
+
         private:
             void addElementToList(T *element)
             {
@@ -55,7 +60,7 @@ namespace std {
                 _count++;
                 _list = (T **)malloc(sizeof(T *) * (_count + 1));
                 if (!_list)
-                    PANIC("malloc() fail");
+                    PANIC("new() fail");
                 if (savedList) {
                     for (uint32 i = 0; i < (_count - 1); i++)
                         _list[i] = savedList[i];

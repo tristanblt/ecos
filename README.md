@@ -9,6 +9,4 @@ make
 
 ## TODO
 
-- Namespaces
-- Static class for C functions
-- Class memory
+- 

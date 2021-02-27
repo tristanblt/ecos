@@ -4,21 +4,24 @@ using namespace ecs;
 
 void Ecos::start()
 {
-    // _systems[0]->start();
+    for (uint32 i = 0; i < _systems.size(); i++)
+        _systems[i]->start();
 }
 
 void Ecos::run()
 {
     start();
-    // while (true) {
-
-    // }
+    while (true) {
+        for (uint32 i = 0; i < _systems.size(); i++)
+            _systems[i]->update();
+    }
     stop();
 }
 
 void Ecos::stop()
 {
-
+    for (uint32 i = 0; i < _systems.size(); i++)
+        _systems[i]->stop();
 }
 
 Entity *Ecos::addEntity()

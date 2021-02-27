@@ -3,11 +3,12 @@
 
 #include <libraries/ecs/interfaces/ISystem.hpp>
 #include <drivers/serial/Serial.hpp>
+#include <drivers/vesa/VbeVideoMode.hpp>
 
 namespace systems {
     class WindowSystem : public ecs::ISystem {
         public:
-            WindowSystem() = default;
+            WindowSystem(VbeVideoMode *vesa);
             ~WindowSystem() = default;
 
             void start();
@@ -15,6 +16,7 @@ namespace systems {
             void stop();
 
         private:
+            VbeVideoMode *_vesa;
     };
 }
 

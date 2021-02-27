@@ -2,7 +2,7 @@
 
 using namespace ecs;
 
-void Entity::addComponent()
+void Entity::addComponent(IComponent *component)
 {
-    drvs::Serial::putstr((uint8 *)"hihi");
+    _components.add(component);
 }

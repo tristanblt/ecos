@@ -11,7 +11,7 @@ namespace ecs {
             Entity() = default;
             ~Entity() = default;
 
-            void addComponent();
+            void addComponent(IComponent *component);
             void removeComponent();
             void getComponent();
 

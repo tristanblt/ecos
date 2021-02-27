@@ -2,14 +2,21 @@
 
 using namespace systems;
 
+WindowSystem::WindowSystem(VbeVideoMode *vesa) :
+    _vesa(vesa)
+{
+
+}
+
 void WindowSystem::start()
 {
-    drvs::Serial::putstr((uint8 *) "hihi");
+
 }
 
 void WindowSystem::update()
 {
-
+    _vesa->drawRect((rect){0, 0, 200, 200}, (color){0xFF0000});
+    _vesa->display();
 }
 
 void WindowSystem::stop()

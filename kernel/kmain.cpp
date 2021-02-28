@@ -18,7 +18,9 @@ void initEcos(Ecos *ecos, VbeVideoMode *vesa)
     ecos->addSystem(new systems::WindowSystem(vesa));
 
     Entity *e = ecos->addEntity();
-    e->addComponent(new components::Window());
+    e->addComponent<components::WindowComponent>(new components::WindowComponent());
+    e = ecos->addEntity();
+    e->addComponent<components::WindowComponent>(new components::WindowComponent());
 }
 
 extern "C" int kmain(uint32 multiboot_info)

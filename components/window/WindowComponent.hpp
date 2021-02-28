@@ -4,10 +4,10 @@
 #include <libraries/ecs/interfaces/IComponent.hpp>
 
 namespace components {
-class Window : public ecs::IComponent {
+class WindowComponent : public ecs::IComponent {
     public:
-        Window() = default;
-        ~Window() = default;
+        WindowComponent() = default;
+        ~WindowComponent() = default;
 
     private:
 };

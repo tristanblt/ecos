@@ -4,6 +4,7 @@
 #include <libraries/ecs/Entity.hpp>
 #include <libraries/ecs/interfaces/ISystem.hpp>
 #include <drivers/serial/Serial.hpp>
+#include <libraries/std/dynamicMap/DynamicMap.hpp>
 
 namespace ecs {
     class Ecos {
@@ -16,7 +17,20 @@ namespace ecs {
             Entity *addEntity();
             void removeEntity();
 
+            void addComponent(int componentId, IComponent *component);
+
             void addSystem(ISystem *system);
+
+            template <typename T>
+            std::DynamicList<T> getComponents()
+            {
+                std::DynamicList<IComponent> oldList = _components.getAll(IDOf::component<T>());
+                std::DynamicList<T> newList;
+
+                for (uint32 i = 0; i < oldList.size(); i++)
+                    newList.add(static_cast<T *>(oldList[i]));
+                return (newList);
+            }
 
         private:
             void start();
@@ -24,6 +38,7 @@ namespace ecs {
 
             std::DynamicList<Entity> _entities;
             std::DynamicList<ISystem> _systems;
+            std::DynamicMap<int, IComponent> _components;
     };
 }
 

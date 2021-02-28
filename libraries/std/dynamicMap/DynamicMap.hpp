@@ -25,12 +25,7 @@ namespace std {
     template <typename U, typename T>
     class DynamicMap {
         public:
-            DynamicMap()
-            {
-                _list = nullptr;
-                _count = 0;
-            }
-
+            DynamicMap() = default;
             ~DynamicMap() = default;
 
             T *add(U index, T *element)
@@ -41,10 +36,20 @@ namespace std {
 
             T *operator[](U index)
             {
-                for (uint32 i = 0; i < _count; i++)
-                    if (index == _list[i].first)
-                        return (_list[i].second)
+                for (uint32 i = 0; i < size(); i++)
+                    if (index == _list[i]->first)
+                        return (_list[i]->second);
                 return (nullptr);
+            }
+
+            DynamicList<T> getAll(U index)
+            {
+                DynamicList<T> list;
+
+                for (uint32 i = 0; i < size(); i++)
+                    if (index == _list[i]->first)
+                        list.add(_list[i]->second);
+                return (list);
             }
 
             uint32 size()

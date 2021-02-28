@@ -19,7 +19,12 @@ namespace std {
 
             }
 
-            ~DynamicList() = default;
+            ~DynamicList()
+            {
+                for (uint32 i = 0; i < _count; i++)
+                    free(_list);
+                free(_list);
+            }
 
             T *add()
             {

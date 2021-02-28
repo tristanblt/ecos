@@ -26,7 +26,7 @@ void Ecos::stop()
 
 Entity *Ecos::addEntity()
 {
-    return(_entities.add());
+    return(_entities.add(new Entity(this)));
 }
 
 void Ecos::removeEntity()
@@ -34,7 +34,13 @@ void Ecos::removeEntity()
 
 }
 
+void Ecos::addComponent(int componentId, IComponent *component)
+{
+    _components.add(componentId, component);
+}
+
 void Ecos::addSystem(ISystem *system)
 {
+    system->setEcos(this);
     _systems.add(system);
 }

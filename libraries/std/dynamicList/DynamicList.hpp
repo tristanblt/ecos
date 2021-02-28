@@ -19,10 +19,7 @@ namespace std {
 
             }
 
-            ~DynamicList()
-            {
-
-            }
+            ~DynamicList() = default;
 
             T *add()
             {

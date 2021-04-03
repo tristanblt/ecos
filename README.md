@@ -1,12 +1,11 @@
 # ECOS
-**An ECS based OS**
 
-## Compile and run
+**ECOS is an Entity-Component-System based Operating System**
+
+## Compile and run with Qemu
 
 ``` bash
 make
 ```
 
-## TODO
-
-- 
+The kernel is only available on x86 architecture
